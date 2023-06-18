@@ -1,32 +1,36 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
 import * as crypto from 'crypto';
+import { Field, ObjectType } from '@nestjs/graphql';
+
+@ObjectType()
 @Entity('users')
 export class UsersEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({nullable: false})
   name: string;
 
-  @Column()
+  @Column({nullable: false})
   email: string;
 
   @BeforeInsert()
   hashPassword() {
     this.password = crypto.createHmac('sha256', this.password).digest('hex');
   }
-  @Column()
+  @Column({nullable: false})
   password: string;
 
-  @Column()
+  @Column({nullable: true})
   gender: string;
 
-  @Column()
+  @Column({nullable: true})
   date_of_birth: Date;
 
-  @Column()
+  @Column({nullable: true})
   referralCode: string;
 
-  @Column()
+  @Column({nullable: true})
+  @Field(() => String)
   photo: string;
 }
